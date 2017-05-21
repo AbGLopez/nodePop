@@ -1,45 +1,71 @@
 'use strict';
 
 let Product = require('../../models/Product');
-const router = require('express').Router();
+const router = require('express').Router(),
+      path = require('path'),
+      basicAuth = require('../../lib/basicAuth');
 
-router.get('/', get);
+router.get('/', basicAuth, get);
 /**
  * GET /
  * @param req
  * @param res
  * @param next
  */
+
 export async function get(req, res, next) {
     try {
-        let rows = await Product.list({}, 0, null, null, 'name location');
-        res.json({success: true, rows});
-    } catch (err) {
-        next(err);
-    }
-}
+        const name = req.query.name,
+              sale_price = req.query.sale_price,
+              price = req.query.price,
+              tags = req.query.tags,
+              fields = req.query.fields,
+              limit = parseInt(req.query.limit),
+              skip = parseInt(req.query.skip),
+              sort = req.query.sort,
+              filter = {};
 
-router.get('/near/:meters([0-9]+)/lon/:lon/lat/:lat', getNear);
-/**
- * GET /near/M/lon/LON/lat/LAT
- * Find products near a point (meters)
- * @param req
- * @param res
- * @param next
- */
-export async function getNear (req, res, next) {
-    try {
-        let meters = parseFloat(req.params.meters);
-        let longitude = parseFloat(req.params.lon);
-        let latitude = parseFloat(req.params.lat);
-        let rows = await Product.find({
-            location: {
-                $nearSphere: {
-                    $geometry: {type: 'Point', coordinates: [longitude, latitude]},
-                    $maxDistance: meters
-                }
+        if (name) {
+            filter['name'] = new RegExp('^' + name, 'i');
+        }
+
+        if (sale_price === 'True') {
+            filter['sale_price'] = true;
+        }
+
+        if (sale_price === 'False') {
+            filter['sale_price'] = false;
+        }
+
+        if (price) {
+            let priceRange = price.toString().split('-');
+            var query_price = {};
+            priceRange[0] = isNaN(parseInt(priceRange[0])) ? '' : priceRange[0];
+            priceRange[1] = isNaN(parseInt(priceRange[1])) ? '' : priceRange[1];
+
+            if ((priceRange[0] !== '') && (priceRange[1] !== '')) {
+
+                filter['price'] = { $gte: priceRange[0], $lte: priceRange[1] };
             }
-        });
+            if (((price[0] === '-') && (priceRange.length === 2)) && (priceRange[1] !== '')) {
+                filter['price'] = {$lte: priceRange[1]};
+            }
+
+            if (priceRange[0] === priceRange[1]) {
+                filter['price'] = { $gte: priceRange[0] };
+            }
+        }
+
+        if (tags) {
+            let productsTags = tags.toString().split('-');
+            filter['tags'] = { $in: productsTags };
+        }
+        let rows = await Product.list(filter, skip, limit, sort, fields);
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].photo) {
+                rows[i].photo = path.join('/images/', rows[i].photo);
+            }
+        }
         res.json({success: true, rows});
     } catch (err) {
         next(err);

@@ -1,7 +1,7 @@
 
-# NodeTyped
+# NodePop
 
-> A Node.js starter kit featuring ES6 with **Secuential Asynchrony (async/await)**,
+> Nodepop Api**,
 [Express](http://expressjs.com/) (Routing middlewares, Web, Api),
 [Typescript](http://www.typescriptlang.org/),
 [Mongoose](http://mongoosejs.com/),
@@ -76,7 +76,6 @@ Open the browser at:
 Start MongoDB, run 'npm run loadMocks', and check:
  * http://localhost:3000/products
  * http://localhost:3000/apiv1/products
- * http://localhost:3000/apiv1/products/near/(meters)/lon/(lon)/lat/(lat)
 
 As you save in your editor, the compiler will rebuild and restart the server.
 
@@ -171,5 +170,3 @@ let readFile = function(file, encoding) => {
 
 # License
  [MIT](/LICENSE)
-
-Made with ♡ by Javier Miguel González @javiermiguelg

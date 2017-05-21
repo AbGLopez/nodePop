@@ -6,16 +6,18 @@
  */
 
 let mongoose = require('mongoose');
-
-let schema = mongoose.Schema({
+var schema = mongoose.Schema({
     name: { type: String, index: true },
     location: {
-        type: { type: String},
+        type: { type: String },
         coordinates: [Number]
-    }
+    },
+    sale_price: Boolean,
+    price: Number,
+    photo: String,
+    tags: [String]
 });
-
-schema.index({location: '2dsphere'});
+schema.index({ location: '2dsphere' });
 
 /**
  * List of products

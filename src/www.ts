@@ -20,20 +20,28 @@ import * as http from 'http';
 let port = normalizePort(process.env['PORT'] || '3000');
 app.set('port', port);
 
+// Se incluye el código para ejecutar en modo cluster
+const cluster = require('cluster');
 /**
  * Create HTTP server.
  */
 
-let server = http.createServer(app);
+// Somos el master?
+if (cluster.isMaster) {
+    const numCPUs = require('os').cpus().length;
+    for (var i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+} else {
+    var server = http.createServer(app);
+    /**
+     * Listen on provided port, on all network interfaces.
+     */
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
+}
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -45,7 +53,6 @@ function normalizePort(val) {
         // named pipe
         return val;
     }
-
     if (port >= 0) {
         // port number
         return port;
@@ -91,5 +98,5 @@ function onListening() {
     let bind = typeof address === 'string'
         ? 'pipe ' + address
         : 'port ' + address.port;
-    debug('Listening on ' + bind);
+    console.log('Listening on ' + bind);
 }

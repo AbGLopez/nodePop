@@ -1,11 +1,11 @@
 'use strict';
 
-let express = require('express');
-let path = require('path');
-let favicon = require('serve-favicon');
-let logger = require('morgan');
-let cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
+let express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser');
 
 let app = express();
 
@@ -45,6 +45,7 @@ app.use('/nm/tether',       express.static(path.join(__dirname, '../node_modules
 // serve API V1 routes
 ///////////////////////////////////////////////////////////
 app.use('/apiv1/products', require('./routes/apiv1/products').router);
+app.use('/apiv1/users', require('./routes/apiv1/users').router);
 
 //
 // serve Web routes
