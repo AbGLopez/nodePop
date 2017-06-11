@@ -37,7 +37,7 @@ The API uses **BASIC_AUTH** :
 Username: Juan
 Password: juanito
 
-Input query example: http://node_midominio.com/apiv1/products?name=coche
+Input query example: http://node_midominio.com/apiv1/products?name=coche&limit=1&price=0-3000&sale_price=true&tag=motor
 
 **Result:**
 
