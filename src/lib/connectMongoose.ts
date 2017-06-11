@@ -1,7 +1,6 @@
 'use strict';
 
 let mongoose = require('mongoose'),
-    localConfig: any = require('../../localConfig'),
     conn = mongoose.connection;
 
 mongoose.Promise = global.Promise;
@@ -15,8 +14,8 @@ conn.once('open', function() {
     console.info('Connected to Mongodb.');
 });
 
-console.log(`Connecting to ${localConfig.MongodbConnection.uri} ...`);
+console.log(`Connecting to database ander ...`);
 
-mongoose.connect(localConfig.MongodbConnection.uri, localConfig.MongodbConnection.options);
+mongoose.connect('mongodb://node:node@localhost/ander');
 
 export { conn };
