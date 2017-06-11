@@ -1,50 +1,65 @@
 
 # NodePop
 
-> Nodepop Api**,
-[Express](http://expressjs.com/) (Routing middlewares, Web, Api),
-[Typescript](http://www.typescriptlang.org/),
-[Mongoose](http://mongoosejs.com/),
-[SCSS](http://sass-lang.com/),
-[EJS](https://github.com/mde/ejs),
-[Nodemon](http://nodemon.io/),
-[Bootstrap 4](http://v4-alpha.getbootstrap.com/),
-[TSLint](https://palantir.github.io/tslint/),
-[Jasmine](http://jasmine.github.io/),
-[JsDoc](http://usejsdoc.org/),
-.
-
-* Simple npm setup and maintenance, without grunt/gulp/webpack/...
-
-* Support for async/await
-
-Example:
-
-```bash
-async function(req, res, next) {
-    let title = 'NodeTyped Express';
-    try {
-        let data = await readFile(file, 'utf-8'); // no callbacks!
-        res.render('index', { title: title, dump: data });
-    } catch (e) {
-        next(e);
-    }
-}
-```
-
 ## Requirements
+
+
+## HOSTS
+
+Works without domain:
+PLEASE input in your host file:
+
+ - 34.226.63.234   midominio.com
+ - 34.226.63.234   node_midominio.com
+
+### GET http://node_midominio.com/apiv1/products
+
+**Input Query**:
+
+limit: {int} limit to records
+name: {string} filter names beginning with the string
+price: {bool} whether to include the count of total records without filters
+price: {range} filter by price range, examples 10-90, -90, 10-
+sale_price: {bool} filter by venta or not
+sort: {string} field name to sort by
+tag: {string} tag name to filter
+
+The API uses **BASIC_AUTH** :
+
+Username: Juan
+Password: juanito
+
+Input query example: http://node_midominio.com/apiv1/products?name=coche
+
+**Result:**
+
+{
+  "success": true,
+  "rows": [
+    {
+      "_id": "593d6b346b8b1b164b7b2626",
+      "name": "Coche segundamano",
+      "sale_price": true,
+      "price": 2000,
+      "photo": "/images/car.jpg",
+      "__v": 0,
+      "tags": [
+        "lifestyle",
+        "motor"
+      ],
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -73.856077,
+          40.848447
+        ]
+      }
+    },
+
+
 
 **Make sure you have node version >= 4.0**
 
-### Clone and Install dependencies
-
-```bash
-# clone the repo
-# --depth 1 removes all but one .git commit history
-git clone --depth 1 https://github.com/jamg44/NodeTyped.git projectname
-
-# change directory to your new project
-cd projectname
 
 # install the repo dependencies with npm
 npm install
