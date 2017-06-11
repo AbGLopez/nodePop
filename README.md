@@ -12,6 +12,14 @@ PLEASE input in your host file:
  - 34.226.63.234   midominio.com
  - 34.226.63.234   node_midominio.com
 
+Node files served by nginx:
+- url : node_midominio.com
+- X-Owner AbGLopez;
+
+## API
+The API can be used with the path:
+[API V1](/apiv1/products)
+
 ### GET http://node_midominio.com/apiv1/products
 
 **Input Query**:
